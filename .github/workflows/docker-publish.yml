@@ -20,5 +20,6 @@ jobs:
       - name: Run tests
         run: |
           for path in runtimes/*; do
-            docker build "$path/" --file Dockerfile
+            echo "$path/"
+            # docker build "$path/" --file Dockerfile
           done
