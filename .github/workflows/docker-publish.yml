@@ -22,3 +22,43 @@ jobs:
           for path in runtimes/*; do
             docker build -t "$GITHUB_REPOSITORY" -f "$path/Dockerfile" "$path" --build-arg WWWGROUP=1000
           done
+
+  push:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: build images
+        run: |
+          for path in runtimes/*; do
+            docker build -t "$GITHUB_REPOSITORY" -f "$path/Dockerfile" "$path" --build-arg WWWGROUP=1000
+          done
+
+      - name: Log into registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
+      - name: Push image
+        run: |
+          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+          DEFAULT_VERSION="8.0"
+
+          # Loop through all docker directories
+          for path in runtimes/*; do
+            TAG=$(echo ${p##*/})
+
+            echo IMAGE_ID=$IMAGE_ID
+            echo TAG=$TAG
+
+            docker tag $IMAGE_NAME $IMAGE_ID:$TAG
+            docker push $IMAGE_ID:$TAG
+          done
+
+
+
