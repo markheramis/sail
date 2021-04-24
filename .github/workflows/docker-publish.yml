@@ -9,7 +9,7 @@ on:
   pull_request:
 
 env:
-  IMAGE_NAME: laravel-sail
+  IMAGE_NAME: sail
 
 jobs:
   test:
@@ -20,7 +20,8 @@ jobs:
       - name: Run tests
         run: |
           for path in runtimes/*; do
-            docker build -t "$GITHUB_REPOSITORY" -f "$path/Dockerfile" "$path" --build-arg WWWGROUP=1000
+            TAG=$(echo ${p##*/})
+            docker build -t "$GITHUB_REPOSITORY:$TAG" -f "$path/Dockerfile" "$path" --build-arg WWWGROUP=1000
           done
 
   push:
@@ -34,7 +35,7 @@ jobs:
       - name: build images
         run: |
           for path in runtimes/*; do
-            docker build -t "$GITHUB_REPOSITORY" -f "$path/Dockerfile" "$path" --build-arg WWWGROUP=1000
+            docker build -t "$GITHUB_REPOSITORY" -f "$path/Dockerfile" "$path/" --build-arg WWWGROUP=1000
           done
 
       - name: Log into registry
