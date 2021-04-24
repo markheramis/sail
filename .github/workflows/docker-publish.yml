@@ -20,6 +20,5 @@ jobs:
       - name: Run tests
         run: |
           for path in runtimes/*; do
-            echo "$path/"
-            # docker build "$path/" --file Dockerfile
+            docker build -t "$GITHUB_REPOSITORY" -f "$path/Dockerfile" "$path"
           done
