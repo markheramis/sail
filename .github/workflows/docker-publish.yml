@@ -9,7 +9,7 @@ on:
   pull_request:
 
 env:
-  IMAGE_NAME: sail
+  IMAGE_NAME: laravel-sail
 
 jobs:
   test:
