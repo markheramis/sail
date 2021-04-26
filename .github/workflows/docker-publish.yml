@@ -20,7 +20,7 @@ jobs:
         run: |
           for path in runtimes/*; do
             TAG=$(echo ${path##*/})
-            docker build "$path/" --file "$path/Dockerfile" --tag $TAG --build-arg WWWGROUP=1000
+            docker build --file "$path/Dockerfile" --tag "sail:$TAG" --build-arg WWWGROUP=1000 "$path/"
           done
 
   push:
@@ -35,7 +35,7 @@ jobs:
         run: |
           for path in runtimes/*; do
             TAG=$(echo ${path##*/})
-            docker build "$path/" --file "$path/Dockerfile" --tag $TAG --build-arg WWWGROUP=1000
+            docker build --file "$path/Dockerfile" --tag "sail:$TAG" --build-arg WWWGROUP=1000 "$path/"
           done
 
       - name: Log into registry
@@ -47,6 +47,3 @@ jobs:
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           echo $IMAGE_ID
-
-
-
