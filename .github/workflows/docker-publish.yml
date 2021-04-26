@@ -42,8 +42,7 @@ jobs:
 
       - name: Push image
         run: |
-          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}
-
+          IMAGE_ID=docker.pkg.github.com/markheramis/laravel-restful-api/$IMAGE_NAME
           echo $IMAGE_ID
 
 
