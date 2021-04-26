@@ -45,21 +45,7 @@ jobs:
         run: |
           IMAGE_ID=docker.pkg.github.com/${{ github.repository }}
 
-          # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-
-          DEFAULT_VERSION="8.0"
-
-          # Loop through all docker directories
-          for path in runtimes/*; do
-            TAG=$(echo ${p##*/})
-
-            echo IMAGE_ID=$IMAGE_ID
-            echo TAG=$TAG
-
-            docker tag $IMAGE_NAME $IMAGE_ID:$TAG
-            docker push $IMAGE_ID:$TAG
-          done
+          echo $IMAGE_ID
 
 
 
