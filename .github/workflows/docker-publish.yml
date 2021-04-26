@@ -1,5 +1,4 @@
 name: Docker
-
 on:
   push:
     branches:
@@ -7,10 +6,8 @@ on:
     tags:
       - v*
   pull_request:
-
 env:
   IMAGE_NAME: sail
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -22,37 +19,29 @@ jobs:
             TAG=$(echo ${path##*/})
             docker build --file "$path/Dockerfile" --tag "sail:$TAG" --build-arg WWWGROUP=1000 "$path/"
           done
-
   push:
     needs: test
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
-
     steps:
       - uses: actions/checkout@v2
-
       - name: build images
         run: |
           for path in runtimes/*; do
             TAG=$(echo ${path##*/})
             docker build --file "$path/Dockerfile" --tag "sail:$TAG" --build-arg WWWGROUP=1000 "$path/"
           done
-
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-
       - name: Push image
         run: |
           IMAGE_ID=docker.pkg.github.com/markheramis/laravel-restful-api/$IMAGE_NAME
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           echo $IMAGE_ID
-
           for path in runtimes/*; do
             TAG=$(echo ${path##*/})
-            
             echo $TAG
-            
             docker tag $IMAGE_NAME $IMAGE_ID:$TAG
             docker push $IMAGE_ID:$TAG
           done
