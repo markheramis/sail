@@ -20,11 +20,11 @@ jobs:
         run: |
           for path in runtimes/*; do
             TAG=$(echo ${p##*/})
-            docker build -t "$TAG" -f "$path/Dockerfile" "$path" --build-arg WWWGROUP=1000
+            docker build -t "$GITHUB_REPOSITORY" -f "$path/Dockerfile" "$path" --build-arg WWWGROUP=1000
           done
 
   push:
-    #needs: test
+    needs: test
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
 
@@ -35,7 +35,7 @@ jobs:
         run: |
           for path in runtimes/*; do
             echo $path
-            docker build -t "$GITHUB_REPOSITORY" -f "$path/Dockerfile" "$path/" --build-arg WWWGROUP=1000
+            docker build -tag "$GITHUB_REPOSITORY" -f "$path/Dockerfile" "$path/" --build-arg WWWGROUP=1000
           done
 
       - name: Log into registry
