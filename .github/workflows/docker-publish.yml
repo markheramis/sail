@@ -19,7 +19,7 @@ jobs:
       - name: Run tests
         run: |
           for path in runtimes/*; do
-            TAG=$(echo ${p##*/})
+            TAG=$(echo ${path##*/})
             docker build -t $TAG -f "$path/Dockerfile" "$path" --build-arg WWWGROUP=1000
           done
 
@@ -34,7 +34,7 @@ jobs:
       - name: build images
         run: |
           for path in runtimes/*; do
-            TAG=$(echo ${p##*/})
+            TAG=$(echo ${path##*/})
             docker build -t $TAG -f "$path/Dockerfile" "$path/" --build-arg WWWGROUP=1000
           done
 
