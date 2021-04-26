@@ -20,7 +20,7 @@ jobs:
         run: |
           for path in runtimes/*; do
             TAG=$(echo ${path##*/})
-            docker build "$path/" -file "$path/Dockerfile" -tag $TAG --build-arg WWWGROUP=1000
+            docker build "$path/" --file "$path/Dockerfile" --tag $TAG --build-arg WWWGROUP=1000
           done
 
   push:
@@ -35,7 +35,7 @@ jobs:
         run: |
           for path in runtimes/*; do
             TAG=$(echo ${path##*/})
-            docker build "$path/" -file "$path/Dockerfile" -tag $TAG --build-arg WWWGROUP=1000
+            docker build "$path/" --file "$path/Dockerfile" --tag $TAG --build-arg WWWGROUP=1000
           done
 
       - name: Log into registry
