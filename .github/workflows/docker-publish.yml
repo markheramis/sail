@@ -47,3 +47,12 @@ jobs:
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           echo $IMAGE_ID
+
+          for path in runtimes/*; do
+            TAG=$(echo ${path##*/})
+            
+            echo $TAG
+            
+            docker tag $IMAGE_NAME $IMAGE_ID:$TAG
+            docker push $IMAGE_ID:$TAG
+          done
