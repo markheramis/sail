@@ -12,20 +12,19 @@ env:
   IMAGE_NAME: sail
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Run tests
-        run: |
-          for path in runtimes/*; do
-            TAG=$(echo ${p##*/})
-            docker build -t "$GITHUB_REPOSITORY" -f "$path/Dockerfile" "$path" --build-arg WWWGROUP=1000
-          done
+  #test:
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - uses: actions/checkout@v2
+  #    - name: Run tests
+  #      run: |
+  #        for path in runtimes/*; do
+  #          TAG=$(echo ${p##*/})
+  #          docker build -t "$GITHUB_REPOSITORY" -f "$path/Dockerfile" "$path" --build-arg WWWGROUP=1000
+  #        done
 
   push:
-    needs: test
+    #needs: test
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
 
