@@ -30,6 +30,7 @@ jobs:
           for path in runtimes/*; do
             TAG=$(echo ${path##*/})
             docker build --file "$path/Dockerfile" --tag "sail:$TAG" --build-arg WWWGROUP=1000 "$path/"
+
           done
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
@@ -44,4 +45,6 @@ jobs:
             echo $TAG
             docker tag $IMAGE_NAME $IMAGE_ID:$TAG
             docker push $IMAGE_ID:$TAG
+
+            
           done
